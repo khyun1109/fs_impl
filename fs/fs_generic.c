@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -11,6 +13,7 @@
 #include "metadata.h"
 #include "fs_dir.h"
 #include "fs_file.h"
+
 
 struct monitor *global_monitor;
 
@@ -67,6 +70,21 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 #ifdef MONITOR
 	monitor_init(&global_monitor);
 #endif
+
+	struct superblock s; //superblock initialization
+	int fd = open("tmp", O_RDWR | O_CREAT | O_LARGEFILE, 0755);
+	s.num_of_inode = DEVSIZE/BLOCK_SIZE;
+	s.ib_beginning = IBO;
+	s.db_beginning = DBO;
+	s.ir_beginning = IO;
+	s.dr_beginning = DO;
+	pwrite(fd, (char*)&s, BLOCK_SIZE, 0);
+
+	struct bitmap b = {{0,} , {0,}};//bitmap initialization
+	
+	for(int i = IBO; i < DBO; i += BLOCK_SIZE){
+		pwrite(fd, 0, BLOCK_SIZE, i);
+	}
 
 	fs_mkdir("/", 0755);
 

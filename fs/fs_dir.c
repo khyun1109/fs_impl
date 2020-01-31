@@ -6,7 +6,7 @@
 #include <assert.h>
 #include "fs_dir.h"
 #include "metadata.h"
-
+#include "fs_main.h"
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
@@ -17,8 +17,14 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 int fs_mkdir (const char *path, mode_t mode) {
 	struct metadata *meta = NULL;
 	init_metadata(meta, mode);
+	meta->size = 4096;
 
-	if(
+	if (strcmp(path, "/") == 0) { //root directory
+	
+	}
+	else {
+		
+	}
 	return 0;
 }
 
