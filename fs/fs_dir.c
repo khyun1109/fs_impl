@@ -15,12 +15,12 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
-	struct metadata *meta = NULL;
-	init_metadata(meta, mode);
-	meta->size = 4096;
+	struct inode *ino = NULL;
+	init_metadata(ino->md, mode);
+	ino->md.size = 4096;
 
 	if (strcmp(path, "/") == 0) { //root directory
-	
+		pwrite(fd, 
 	}
 	else {
 		

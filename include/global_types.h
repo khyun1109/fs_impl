@@ -11,4 +11,6 @@
 #define IO 81 * 4096
 #define DO 154277L * 4096L
 
+int fd;
+
 #endif

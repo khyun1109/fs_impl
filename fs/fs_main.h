@@ -9,7 +9,6 @@
 //extern struct monitor *global_monitor;
 #endif
 
-FILE *fp;
 
 struct superblock {
 	int num_of_inode;

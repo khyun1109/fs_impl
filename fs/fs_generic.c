@@ -72,7 +72,7 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 #endif
 
 	struct superblock s; //superblock initialization
-	int fd = open("tmp", O_RDWR | O_CREAT | O_LARGEFILE, 0755);
+	fd = open("tmp", O_RDWR | O_CREAT | O_LARGEFILE, 0755);
 	s.num_of_inode = DEVSIZE/BLOCK_SIZE;
 	s.ib_beginning = IBO;
 	s.db_beginning = DBO;
@@ -82,8 +82,9 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 
 	struct bitmap b = {{0,} , {0,}};//bitmap initialization
 	
-	for(int i = IBO; i < DBO; i += BLOCK_SIZE){
-		pwrite(fd, 0, BLOCK_SIZE, i);
+	char *buf = "0";
+	for(int i = IBO; i < IO; i += 1024){
+		pwrite(fd, buf, 1, i);
 	}
 
 	fs_mkdir("/", 0755);
