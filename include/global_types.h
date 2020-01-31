@@ -5,6 +5,10 @@
 
 #define BLOCK_SIZE	4096
 #define PAGESIZE	4096
-#define DEVSIZE 1024L * 1024L * 1024L * 16L
+#define DEVSIZE 1024L * 1024L * 1024L * 10L
+#define IBO 4096
+#define DBO 6 * 4096
+#define IO 81 * 4096
+#define DO 154277L * 4096L
 
 #endif

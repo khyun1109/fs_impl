@@ -8,6 +8,7 @@
 #include "fs_file.h"
 #include "metadata.h"
 #include "fs_main.h"
+#include "fs_controller.h"
 
 extern struct monitor *global_monitor;
 
@@ -19,6 +20,9 @@ int fs_open (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_create (const char *path, mode_t mode, struct fuse_file_info *fi) {
+	struct metadata *meta = NULL;
+	init_metadata(meta, mode);
+	
 	fi->keep_cache = 1;
 
 	return 0;

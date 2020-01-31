@@ -15,7 +15,10 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
-	
+	struct metadata *meta = NULL;
+	init_metadata(meta, mode);
+
+	if(
 	return 0;
 }
 
