@@ -82,9 +82,9 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 
 	struct bitmap b = {{0,} , {0,}};//bitmap initialization
 	
-	char *buf = "0";
+	char *buf = 0;
 	for(int i = IBO; i < IO; i += 1024){
-		pwrite(fd, buf, 1, i);
+		pwrite(fd, buf, 1, i/1024);
 	}
 
 	fs_mkdir("/", 0755);

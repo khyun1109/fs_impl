@@ -8,8 +8,10 @@
 #include <unistd.h>
 #include "metadata.h"
 #include "fs_controller.h"
+#include "fs_main.h"
 
 static struct ino_allocator *ino_queue;
+static struct dat_allocator *dat_map;
 
 uint64_t ino_get(){
 	uint64_t ino;
@@ -24,18 +26,31 @@ uint64_t ino_get(){
 	return ino;
 }
 
-void init_metadata(struct metadata *meta, mode_t mode) {
+uint64_t data_get(){
+	uint64_t dat;
+	pthread_mutex_lock(data_map->mutex);
+	if ((dat = (uint64_t) map_pop(dat_map->map)) != 0){
+		pthread_mutex_unlock(dat_map->mutex);
+		return dat;
+	}
+	data = dat_map->cur_dat++;
+	pthread_mutex_unlock(dat_map->mutex);
+
+	return dat;
+}
+
+void init_metadata(struct inode *ino, mode_t mode) {
 		
-	meta->mode = mode;
-	meta->nlink = 1;
-	meta->uid = fuse_get_context()->uid;
-	meta->gid = fuse_get_context()->gid;
-	meta->size = 0;
-	meta->atime = time(NULL);
-	meta->ctime = time(NULL);
-	meta->mtime = time(NULL);
-	meta->ino = ino_get();
+	ino->md.mode = mode;
+	ino->md.nlink = 1;
+	ino->md.uid = fuse_get_context()->uid;
+	ino->md.gid = fuse_get_context()->gid;
+	ino->md.size = 0;
+	ino->md.atime = time(NULL);
+	ino->md.ctime = time(NULL);
+	ino->md.mtime = time(NULL);
+	ino->md.ino = ino_get();
 }	
 	
 	
-	
+

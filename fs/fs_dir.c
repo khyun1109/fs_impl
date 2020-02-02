@@ -7,6 +7,7 @@
 #include "fs_dir.h"
 #include "metadata.h"
 #include "fs_main.h"
+#include "fs_controller.h"
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
@@ -19,11 +20,24 @@ int fs_mkdir (const char *path, mode_t mode) {
 	init_metadata(ino->md, mode);
 	ino->md.size = 4096;
 
+	char *buf1 = -128;
+	char *buf2 = ".";
 	if (strcmp(path, "/") == 0) { //root directory
-		pwrite(fd, 
+		ino->pointer = DO/1024; 
+		pwrite(fd,  buf1, 1, 4); //correcting inode bitmap
+		pwrite(fd, (char *)ino, 4, IO/1024); //writing inode 
+		pwrite(fd, buf2, 1, DO/1024);//writing data
 	}
 	else {
-		
+		char *ptr = strtok(path, "/");
+		while(1){
+			char buffer[4096];
+			pread(fd, buffer, )
+			if(){
+			}
+			else{ //
+			}
+		}
 	}
 	return 0;
 }

@@ -3,11 +3,11 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "string.h"
+
 int main() {
 	
-	int fd = open("tmp", O_RDWR | O_CREAT, 0755);
-	char *buf;
-	pread(fd, buf, 1, 1);
-	buf = "5";
-	pwrite(fd, buf, 1, 1);
+	char buf[10] = "/1/2/3";
+	char *ptr = strtok(buf, "/");
+	printf("%s\n", ptr);
 }

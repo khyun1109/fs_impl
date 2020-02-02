@@ -21,7 +21,7 @@ uint64_t ino_get();
 void allocator_init();
 void allocator_destroy();
 
-void init_metadata(struct metadata *meta, mode_t mode);
+void init_metadata(struct inode *ino, mode_t mode);
 
 
 
