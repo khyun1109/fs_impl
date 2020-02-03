@@ -20,22 +20,41 @@ int fs_mkdir (const char *path, mode_t mode) {
 	init_metadata(ino->md, mode);
 	ino->md.size = 4096;
 
-	char *buf1 = -128;
-	char *buf2 = ".";
 	if (strcmp(path, "/") == 0) { //root directory
-		ino->pointer = DO/1024; 
-		pwrite(fd,  buf1, 1, 4); //correcting inode bitmap
-		pwrite(fd, (char *)ino, 4, IO/1024); //writing inode 
-		pwrite(fd, buf2, 1, DO/1024);//writing data
+		ino->pointer = DO; 
+		char *buf1 = -128;
+		char *buf2 = ". ";
+		char *buf3 = 0;
+		pwrite(fd, buf1, 1, IBO); //correcting inode bitmap
+		pwrite(fd, buf1, 1, DBO); //correcting data bitmap
+		pwrite(fd, (char *)ino, PAGE_SIZE, ino->md.ino); //writing inode 
+		pwrite(fd, buf2, 2, DO);//writing data
+		pwrite(fd, buf3, 1, DO+1);
 	}
-	else {
+	else { //orinary directory
 		char *ptr = strtok(path, "/");
-		while(1){
-			char buffer[4096];
-			pread(fd, buffer, )
-			if(){
+		int level = 0;
+		while (ptr != NULL){
+			level++;
+			ptr = strtok(ptr, "/");
+		}
+		ptr = strtok(path, "/");
+		char buffer[PAGE_SIZE];
+		pread(fd, buffer, PAGE_SIZE, DO);
+		char *ptr2 = strtok(buffer, " ");
+		for(int i = 1; i < level+1; i++){
+			if(i == level){ //The place that dir will be located.
+				if( ){
+					printf("directory already exists!!\n");
+				}
+				else{
+					bitmap_control(ino->md.ino);
+					pwrite(fd, (char *)ino, PAGE_SIZE, ino->md.ino);
+					pwrite(fd, , , );
+				}
 			}
-			else{ //
+			else{ //Parent dir of target dir
+				
 			}
 		}
 	}

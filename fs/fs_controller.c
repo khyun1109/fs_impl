@@ -51,6 +51,10 @@ void init_metadata(struct inode *ino, mode_t mode) {
 	ino->md.mtime = time(NULL);
 	ino->md.ino = ino_get();
 }	
-	
+
+void bitmap_control(uint32_t t_blknum){
+	pread(fd,	);
+	pwrite(fd,	)
+}
 	
 
