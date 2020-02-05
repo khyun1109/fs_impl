@@ -12,5 +12,10 @@
 #define DO 154277L * 4096L
 
 int fd;
-
+uint64_t db_off;
+uint64_t ib_off;
+uint64_t i_off;
+uint64_t d_off;
+uint64_t i_cycle;
+uint64_t d_cycle;
 #endif

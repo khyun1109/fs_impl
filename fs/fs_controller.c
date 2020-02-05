@@ -15,28 +15,42 @@ static struct dat_allocator *dat_map;
 
 uint64_t ino_get(){
 	uint64_t ino;
-	pthread_mutex_lock(ino_queue->mutex);
 	if ((ino = (uint64_t) queue_pop(ino_queue->queue)) != 0){
-		pthread_mutex_unlock(ino_queue->mutex);
 		return ino;
 	}
 	ino = ino_queue->cur_ino++;
-	pthread_mutex_unlock(ino_queue->mutex);
 
 	return ino;
 }
 
 uint64_t data_get(){
 	uint64_t dat;
-	pthread_mutex_lock(data_map->mutex);
 	if ((dat = (uint64_t) map_pop(dat_map->map)) != 0){
-		pthread_mutex_unlock(dat_map->mutex);
 		return dat;
 	}
 	data = dat_map->cur_dat++;
-	pthread_mutex_unlock(dat_map->mutex);
 
 	return dat;
+}
+
+uint64_t ibit_get(){
+	uint64_t ret;
+	if (i_cycle == 0){
+		ret = ib_off;
+		return ret;
+	}	
+	else {
+	}
+}
+
+uint64_t dbit_get(){
+	uint64_t ret;
+	if (d_cycle == 0){
+		ret = db_off;
+		return ret;
+	}
+	else{
+	}
 }
 
 void init_metadata(struct inode *ino, mode_t mode) {
@@ -52,9 +66,15 @@ void init_metadata(struct inode *ino, mode_t mode) {
 	ino->md.ino = ino_get();
 }	
 
-void bitmap_control(uint32_t t_blknum){
+void bitmap_add(){
+	int iboff = ibit_get();
+	int dboff = dbit_get():
 	pread(fd,	);
 	pwrite(fd,	)
+}
+
+void bitmap_del(uint32_t t_blknum){
+
 }
 	
 

@@ -70,6 +70,12 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 #ifdef MONITOR
 	monitor_init(&global_monitor);
 #endif
+	ib_off = IBO;
+	db_off = DBO;
+	i_off = IO;
+	d_off = DO;
+	i_cycle = 0;
+	d_cycle = 0;
 
 	struct superblock s; //superblock initialization
 	fd = open("tmp", O_RDWR | O_CREAT | O_LARGEFILE, 0755);
