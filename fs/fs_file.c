@@ -44,7 +44,7 @@ int fs_flush (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_unlink (const char *path) {
-	
+	bitmap_del();	
 	return 0;
 }
 

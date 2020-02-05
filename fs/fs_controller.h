@@ -21,6 +21,11 @@ uint64_t ino_get();
 void allocator_init();
 void allocator_destroy();
 
+
+uint64_t ino_get();
+uint64_t data_get();
+uint64_t ibit_get();
+uint64_t dbit_get();
 void init_metadata(struct inode *ino, mode_t mode);
 
 

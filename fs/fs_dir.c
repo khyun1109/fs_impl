@@ -12,6 +12,40 @@
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
 
+	char *ptr = strtok(path, "/");
+	int level = 0;
+	while (ptr != NULL){
+		level++;
+		ptr = strtok(ptr, "/");
+	}
+
+	char buffer[PAGE_SIZE];
+	pread(fd, buffer,PAGE_SIZE, DO);
+	char *ptr2 = strtok(buffer, " ");
+	ptr = strtok(path, "/");
+	for (int i = 1; i < level+1; i++){
+		if(i == level){
+			for(int j = 0; j < num; j++){
+				if(ptr2 == ptr){
+					//Hit!!!
+				}
+				ptr2 = strtok(buffer, " ");
+				ptr2 = strtok(buffer, " ");
+			}
+			printf("No such directory!\n");
+		}
+		else{
+			for (int j = 0; j < num; j++){
+				if(ptr2 == ptr){
+					ptr = strtok(path, "/");
+					break;
+				}
+				ptr2 = strtok(buffer, " ");
+				ptr2 = strtok(buffer, " ");
+			}
+			printf("No such directory!\n"); 
+		}
+	}
 	return 0;
 }
 
@@ -66,6 +100,42 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 
 	filler(buf, ".", NULL, 0, (enum fuse_fill_dir_flags)0);
 	filler(buf, "..", NULL, 0, (enum fuse_fill_dir_flags)0);
+	char *ptr = strtok(path, "/");
+	int level = 0;
+	while (ptr != NULL){
+		level++;
+		ptr = strtok(ptr, "/");
+	}
+
+	char buffer[PAGE_SIZE];
+	pread(fd, buffer,PAGE_SIZE, DO);
+	char *ptr2 = strtok(buffer, " ");
+	ptr = strtok(path, "/");
+	for (int i = 1; i < level+1; i++){
+		if(i == level){
+			for(int j = 0; j < num; j++){
+				if(ptr2 == ptr){
+					//Hit!!!
+				}
+				ptr2 = strtok(buffer, " ");
+				ptr2 = strtok(buffer, " ");
+			}
+			printf("No such directory!\n");
+		}
+		else{
+			for (int j = 0; j < num; j++){
+				if(ptr2 == ptr){
+					ptr = strtok(path, "/");
+					break;
+				}
+				ptr2 = strtok(buffer, " ");
+				ptr2 = strtok(buffer, " ");
+			}
+			printf("No such directory!\n"); 
+		}
+	}
+
+	printf();
 
 	return 0;
 }

@@ -36,20 +36,36 @@ uint64_t data_get(){
 uint64_t ibit_get(){
 	uint64_t ret;
 	if (i_cycle == 0){
-		ret = ib_off;
+		char *ptr;
+		pread(fd, ptr, 1, ib_off);
+		if(ptr == -1){
+			ib_off += 1;
+			ret = ib_off;
+		}
+		else{
+			ret = ib_off;
+		}
 		return ret;
 	}	
-	else {
+	else { //i_cycle >= 1
 	}
 }
 
 uint64_t dbit_get(){
 	uint64_t ret;
 	if (d_cycle == 0){
-		ret = db_off;
+		char *ptr;
+		pread(fd, ptr, 1, db_off);
+		if(ptr == -1){
+			db_off += 1;
+			ret = db_off;
+		}	
+		else{
+			ret = db_off;
+		}
 		return ret;
 	}
-	else{
+	else{ //d_cycle >= 1
 	}
 }
 
@@ -69,12 +85,58 @@ void init_metadata(struct inode *ino, mode_t mode) {
 void bitmap_add(){
 	int iboff = ibit_get();
 	int dboff = dbit_get():
-	pread(fd,	);
-	pwrite(fd,	)
+	char *iptr;
+	char *dptr;
+	pread(fd, iptr, 1, iboff);
+	pread(fd, dptr, 1, dboff);
+
+	unsigned char x = *iptr;
+	unsigned char y = *dptr;;
+	int a = 0;
+	int b = 0;
+	for(int i = 0; i < 8; i++){
+		if(x & (1 << (7-i)) == 0){
+			break;
+		}
+		else{
+			a++;
+		}
+	}
+	for(int j = 0; j < 8; j++){
+		if(x & (1 << (7-j)) == 0){
+			break;
+		}
+		else{
+			b++;
+		}
+	}
+	
+	int k = 1;
+	if (a == 0){
+		*iptr -= 128;
+	}
+	else{
+		for(int i = 0; i < 7-a; i++){
+			k *= 2;
+		}
+		*iptr += k;
+	}
+	k = 1;
+	if (b == 0){
+		*dptr -= 128;
+	}
+	else{
+		for(int i = 0; i < 7-b; i++){
+			k *= 2;
+		}
+		*dptr += k;
+	}
+	pwrite(fd, iptr, 1, iboff);
+	pwrite(fd, dptr, 1, dboff);
 }
 
-void bitmap_del(uint32_t t_blknum){
-
+void bitmap_del(uint32_t i_blknum){
+	
 }
 	
 
